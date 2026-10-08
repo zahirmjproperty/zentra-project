@@ -1,9 +1,10 @@
 'use strict';
 const config=window.ZENTRA_CONFIG||{};
 function trustedWebUrl(value){try{const u=new URL(value,location.href);return u.protocol==='https:'||u.origin===location.origin?u.href:null}catch{return null}}
-/* Sign-in is wired to the family route only when the deployment actually
-   provides it. Until then the UI states the gap: no navigation, no 404,
-   no fabricated session. */
+/* Sign-in navigates to the ZENTRA-id portal when the deployment provides a
+   login URL. This host has no backend, so there is no local session to
+   fabricate: the fallback dialog states the access path instead of rendering
+   a form that could never authenticate. */
 const loginUrl=config.loginStatus==='ready'&&config.loginUrl?trustedWebUrl(config.loginUrl):null;
 const dialog=document.querySelector('#login-unavailable');
 if(config.identityUrl&&dialog){
